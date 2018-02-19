@@ -1,6 +1,7 @@
 import os
 import zipfile
 import re
+from pathlib import Path
 
 class analyzer(object):
 
@@ -10,7 +11,7 @@ class analyzer(object):
         self.service=service
 
     def __repr__(self):
-        return f'{self.__class__.__name__} Class analyzing logs from {self._zippath}, for the service - {self._service}'
+        return f'{self.__class__.__name__} Class analyzing logs from {self.zippath}, for the service - {self.service}'
 
     @property
     def zippath(self):
@@ -18,7 +19,13 @@ class analyzer(object):
 
     @zippath.setter
     def zippath(self, zippath):
-        self._zippath = zippath
+        file_to_analyze=Path(zippath)
+        if file_to_analyze.exists():
+            self._zippath = zippath
+        else:
+            raise FileNotFoundError("Check the file path. Can't find the zip file in the path.")
+
+
 
     @property
     def service(self):
