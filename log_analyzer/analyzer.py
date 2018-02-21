@@ -5,6 +5,10 @@ from pathlib import Path
 
 class analyzer(object):
 
+    expected_log_dict={'BICS':['opmn.log', 'opmn.out', 'bi_server1.log', 'bi_server1.out',
+                               'bi_server1-diagnostic.log', 'sawlog0.log', 'obips1.out', 'obis1-diagnostic.log',
+                               'obis1.out', 'obis1-query.log', 'nqscheduler.log']}
+
     'This class analysis the logs'
     def __init__(self, zippath, service):
         self.zippath=zippath
@@ -25,8 +29,6 @@ class analyzer(object):
         else:
             raise FileNotFoundError("Check the file path. Can't find the zip file in the path.")
 
-
-
     @property
     def service(self):
         return self._service
@@ -42,11 +44,14 @@ class analyzer(object):
 
 
     def check_for_logs(self):
+        list_of_files_present=[]
         logs_path=os.path.split(self.zippath)
         word = re.split(r'\.(?!\d)', logs_path[1])
         #logs_path=logs_path[0].join(word[0])
         logs_path=os.path.join(logs_path[0], word[0])
-        print(logs_path)
+        os.chdir(logs_path)
+        #implentaion to follow
+
 
     def time_parser(self):
         pass
