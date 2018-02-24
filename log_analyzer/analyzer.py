@@ -8,7 +8,8 @@ class analyzer(object):
 
     expected_log_dict={'BICS':['opmn.log', 'opmn.out', 'bi_server1.log', 'bi_server1.out',
                                'bi_server1-diagnostic.log', 'sawlog0.log', 'obips1.out', 'obis1-diagnostic.log',
-                               'obis1.out', 'obis1-query.log', 'nqscheduler.log']}
+                               'obis1.out', 'obis1-query.log', 'nqscheduler.log'],
+                       'ICS':['bi_server1.out', 'bi_server1.log']}
 
     'This class analysis the logs'
     def __init__(self, zippath, service):
@@ -45,15 +46,29 @@ class analyzer(object):
 
 
     def check_for_logs(self):
-        list_of_files_present=[]
+        file_presence={}
         logs_path=os.path.split(self.zippath)
         word = re.split(r'\.(?!\d)', logs_path[1])
         #logs_path=logs_path[0].join(word[0])
         logs_path=os.path.join(logs_path[0], word[0])
         all_files=os.listdir(logs_path)
-        try:
-            if self.service in self.expected_log_dict:
-                return True
+        #print(all_files)
+
+        "To check if the service entere is valid"
+        if self.service in self.expected_log_dict.keys():
+            pass
+        else:
+            raise ValueError("The service Entered is not valid. Program supports the services:",
+                             self.expected_log_dict.keys())
+
+        for item in all_files:
+            if item in self.expected_log_dict.values():
+                file_presence[item]='Yes'
+            else:
+                file_presence[item]='No'
+
+        print(file_presence)
+
 
     def conver_to_html(self):
         df=pd.read_csv("datafile.csv")
@@ -67,6 +82,4 @@ class analyzer(object):
 
     def time_parser(self):
         pass
-
-
 
