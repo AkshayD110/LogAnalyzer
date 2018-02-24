@@ -3,6 +3,7 @@ import zipfile
 import re
 from pathlib import Path
 import pandas as pd
+from collections import defaultdict
 
 class analyzer(object):
 
@@ -70,16 +71,21 @@ class analyzer(object):
 
         print(file_presence)
 
+        "alternative logic to build the end dictionary"
+
+        results_container=defaultdict(list)
+        for items in all_files:
+            if items in self.expected_log_dict[self.service]:
+                results_container[items].append('Yes')
+            else:
+                results_container[items].append('No')
+        print(results_container)
+
+
 
     def conver_to_html(self):
         df=pd.read_csv("datafile.csv")
         df.to_html("SummaryFile.html")
-
-
-
-
-
-
 
     def time_parser(self):
         pass
