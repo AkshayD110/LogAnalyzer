@@ -2,6 +2,7 @@ import os
 import zipfile
 import re
 from pathlib import Path
+import pandas as pd
 
 class analyzer(object):
 
@@ -49,8 +50,19 @@ class analyzer(object):
         word = re.split(r'\.(?!\d)', logs_path[1])
         #logs_path=logs_path[0].join(word[0])
         logs_path=os.path.join(logs_path[0], word[0])
-        os.chdir(logs_path)
-        #implentaion to follow
+        all_files=os.listdir(logs_path)
+        try:
+            if self.service in self.expected_log_dict:
+                return True
+
+    def conver_to_html(self):
+        df=pd.read_csv("datafile.csv")
+        df.to_html("SummaryFile.html")
+
+
+
+
+
 
 
     def time_parser(self):
