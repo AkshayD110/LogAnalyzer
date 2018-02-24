@@ -6,9 +6,10 @@ import pandas as pd
 
 class analyzer(object):
 
+    """it is imp to build the below dict properly as per user requirement"""
     expected_log_dict={'BICS':['opmn.log', 'opmn.out', 'bi_server1.log', 'bi_server1.out',
                                'bi_server1-diagnostic.log', 'sawlog0.log', 'obips1.out', 'obis1-diagnostic.log',
-                               'obis1.out', 'obis1-query.log', 'nqscheduler.log'],
+                               'obis1.out', 'obis1-query.log', 'nqscheduler.log', 'nqserver.log'],
                        'ICS':['bi_server1.out', 'bi_server1.log']}
 
     'This class analysis the logs'
@@ -52,17 +53,17 @@ class analyzer(object):
         #logs_path=logs_path[0].join(word[0])
         logs_path=os.path.join(logs_path[0], word[0])
         all_files=os.listdir(logs_path)
-        #print(all_files)
+        print(all_files)
 
         "To check if the service entere is valid"
         if self.service in self.expected_log_dict.keys():
             pass
         else:
-            raise ValueError("The service Entered is not valid. Program supports the services:",
-                             self.expected_log_dict.keys())
+            raise ValueError(f"The service Entered is not valid. Program supports the services:{self.expected_log_dict.keys()}")
 
+        "Logic to check if the log file is present"
         for item in all_files:
-            if item in self.expected_log_dict.values():
+            if item in self.expected_log_dict[self.service]:
                 file_presence[item]='Yes'
             else:
                 file_presence[item]='No'
