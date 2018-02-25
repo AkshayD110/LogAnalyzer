@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 import pandas as pd
 from collections import defaultdict
+import csv
 
 class analyzer(object):
 
@@ -100,6 +101,27 @@ class analyzer(object):
             self.results_container[item].append(warning_count)
 
         print(self.results_container)
+
+    def write_to_csvfile(self):
+        single_list_results=[]
+        dict_result=dict(self.results_container)
+        sl_no_count=1
+        for key, value in dict_result.items():
+            tmp=[]
+            tmp.append(sl_no_count)
+            tmp.append(key)
+            for i in range(len(value)):
+                tmp.append(value[i])
+            single_list_results.append(tmp)
+            sl_no_count+=1
+
+        with open('datafile.csv', 'w', newline='') as file:
+            writer=csv.writer(file)
+            writer.writerow(['Sl No','Logfile', 'Present(Yes/No)', 'Error Count', 'Warning Count'])
+            for item in single_list_results:
+                writer.writerow(item)
+
+
 
     def conver_to_html(self):
         df=pd.read_csv("datafile.csv")
