@@ -5,6 +5,9 @@ def main():
     analysis_obj=analyzer.analyzer(path,service)
     analysis_obj.unzip_files()
     analysis_obj.check_for_logs()
+    analysis_obj.find_errors_warnings()
+    analysis_obj.write_to_csvfile()
+    analysis_obj.conver_to_html()
 
 if __name__ == '__main__':
     main()
