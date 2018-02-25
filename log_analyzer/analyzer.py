@@ -46,14 +46,16 @@ class analyzer(object):
             logs_extractpath=os.path.split(self.zippath)
             zip_ref.extractall(logs_extractpath[0])
 
+    def unziped_file_location(self):
+        logs_path = os.path.split(self.zippath)
+        word = re.split(r'\.(?!\d)', logs_path[1])
+        logs_path = os.path.join(logs_path[0], word[0])
+        return logs_path
 
     def check_for_logs(self):
+        log_path=self.unziped_file_location()
         file_presence={}
-        logs_path=os.path.split(self.zippath)
-        word = re.split(r'\.(?!\d)', logs_path[1])
-        #logs_path=logs_path[0].join(word[0])
-        logs_path=os.path.join(logs_path[0], word[0])
-        all_files=os.listdir(logs_path)
+        all_files=os.listdir(log_path)
         print(all_files)
 
         "To check if the service entere is valid"
@@ -71,7 +73,7 @@ class analyzer(object):
 
         print(file_presence)
 
-        "alternative logic to build the end dictionary"
+        "alternative logic to build the end Single dictionary"
 
         results_container=defaultdict(list)
         for items in all_files:
@@ -81,12 +83,18 @@ class analyzer(object):
                 results_container[items].append('No')
         print(results_container)
 
+    def find_errors_warnings(self):
+        error_count=0
+        warning_count=0
+
+
 
 
     def conver_to_html(self):
         df=pd.read_csv("datafile.csv")
         df.to_html("SummaryFile.html")
 
+    "An implementation to take user time input. Coming up next"
     def time_parser(self):
         pass
 
