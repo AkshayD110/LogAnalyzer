@@ -66,19 +66,8 @@ class analyzer(object):
         else:
             raise ValueError(f"The service Entered is not valid. Program supports the services:{self.expected_log_dict.keys()}")
 
-        "Logic to check if the log file is present"
-        """
-        for item in all_files:
-            if item in self.expected_log_dict[self.service]:
-                file_presence[item]='Yes'
-            else:
-                file_presence[item]='No'
 
-        print(file_presence)
-        """
-        "alternative logic to build the end Single dictionary"
-
-
+        "logic to build the end Single dictionary"
         for items in all_files:
             if items in self.expected_log_dict[self.service]:
                 self.results_container[items].append('Yes')
@@ -87,6 +76,7 @@ class analyzer(object):
         print(self.results_container)
 
     def find_errors_warnings(self):
+        print("====Getting all Errors and Warnings====")
         error_count=0
         warning_count=0
         log_path=self.unziped_file_location()
@@ -100,9 +90,10 @@ class analyzer(object):
             self.results_container[item].append(error_count)
             self.results_container[item].append(warning_count)
 
-        print(self.results_container)
+        #print(self.results_container)
 
     def write_to_csvfile(self):
+        print("====Generting the summary report====")
         single_list_results=[]
         dict_result=dict(self.results_container)
         sl_no_count=1
