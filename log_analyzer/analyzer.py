@@ -8,6 +8,7 @@ from collections import defaultdict
 class analyzer(object):
 
     """it is imp to build the below dict properly as per user requirement"""
+    results_container = defaultdict(list)
     expected_log_dict={'BICS':['opmn.log', 'opmn.out', 'bi_server1.log', 'bi_server1.out',
                                'bi_server1-diagnostic.log', 'sawlog0.log', 'obips1.out', 'obis1-diagnostic.log',
                                'obis1.out', 'obis1-query.log', 'nqscheduler.log', 'nqserver.log'],
@@ -65,6 +66,7 @@ class analyzer(object):
             raise ValueError(f"The service Entered is not valid. Program supports the services:{self.expected_log_dict.keys()}")
 
         "Logic to check if the log file is present"
+        """
         for item in all_files:
             if item in self.expected_log_dict[self.service]:
                 file_presence[item]='Yes'
@@ -72,23 +74,32 @@ class analyzer(object):
                 file_presence[item]='No'
 
         print(file_presence)
-
+        """
         "alternative logic to build the end Single dictionary"
 
-        results_container=defaultdict(list)
+
         for items in all_files:
             if items in self.expected_log_dict[self.service]:
-                results_container[items].append('Yes')
+                self.results_container[items].append('Yes')
             else:
-                results_container[items].append('No')
-        print(results_container)
+                self.results_container[items].append('No')
+        print(self.results_container)
 
     def find_errors_warnings(self):
         error_count=0
         warning_count=0
+        log_path=self.unziped_file_location()
+        os.chdir(log_path)
+        all_files=os.listdir(log_path)
+        for item in all_files:
+            with open(item) as file:
+                content=file.read()
+                error_count=sum(1 for match in re.finditer(r"(?i)ERROR", content))
+                warning_count=sum(1 for match in re.finditer(r"(?i)warning", content))
+            self.results_container[item].append(error_count)
+            self.results_container[item].append(warning_count)
 
-
-
+        print(self.results_container)
 
     def conver_to_html(self):
         df=pd.read_csv("datafile.csv")
