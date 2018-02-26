@@ -92,6 +92,9 @@ class analyzer(object):
 
         #print(self.results_container)
 
+    def top_five_errors(self):
+        pass
+
     def write_to_csvfile(self):
         print("====Generting the summary report====")
         single_list_results=[]
