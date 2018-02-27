@@ -14,5 +14,7 @@ def main():
     analysis_obj.top_five_errors()
     analysis_obj.conver_to_html()
 
+    "create a quick seperate function for writing to csv"
+
 if __name__ == '__main__':
     main()
