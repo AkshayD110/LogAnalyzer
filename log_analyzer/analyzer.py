@@ -3,7 +3,7 @@ import zipfile
 import re
 from pathlib import Path
 import pandas as pd
-from collections import defaultdict
+from collections import defaultdict, Counter
 import csv
 import fnmatch
 
@@ -94,15 +94,24 @@ class analyzer(object):
         #print(self.results_container)
 
     def top_five_errors(self):
-        errors=[]
+        errors_deft_dict=defaultdict(list)
+        tempList=[]
         log_path=self.unziped_file_location()
         os.chdir(log_path)
         all_files=os.listdir(log_path)
+        error_pattern=["Error", "error", "ERROR"]
         for item in all_files:
             with open(item) as file:
-                content=file.read()
-                phrases=[fnmatch.filter(content, '?error?' or '?ERROR?')]
-                print(item, phrases)
+                for line in file.readlines():
+                    for phrase in error_pattern:
+                        if phrase in line:
+                            errors_deft_dict[item].append(line)
+                            tempList.append(line)
+        print(len(errors_deft_dict))
+        for i in range(len(errors_deft_dict)):
+            print(errors_deft_dict[i])
+
+
 
     def write_to_csvfile(self):
         print("====Generting the summary report====")
