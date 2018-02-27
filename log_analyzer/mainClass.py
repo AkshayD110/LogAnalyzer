@@ -11,6 +11,7 @@ def main():
     analysis_obj.check_for_logs()
     analysis_obj.find_errors_warnings()
     analysis_obj.write_to_csvfile()
+    analysis_obj.top_five_errors()
     analysis_obj.conver_to_html()
 
 if __name__ == '__main__':
