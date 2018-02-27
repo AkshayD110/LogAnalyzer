@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 from collections import defaultdict
 import csv
+import fnmatch
 
 class analyzer(object):
 
@@ -93,7 +94,15 @@ class analyzer(object):
         #print(self.results_container)
 
     def top_five_errors(self):
-        pass
+        errors=[]
+        log_path=self.unziped_file_location()
+        os.chdir(log_path)
+        all_files=os.listdir(log_path)
+        for item in all_files:
+            with open(item) as file:
+                content=file.read()
+                phrases=[fnmatch.filter(content, '?error?' or '?ERROR?')]
+                print(item, phrases)
 
     def write_to_csvfile(self):
         print("====Generting the summary report====")
@@ -120,6 +129,7 @@ class analyzer(object):
     def conver_to_html(self):
         df=pd.read_csv("datafile.csv")
         df.to_html("SummaryFile.html")
+        print("====The summary file has been generated====")
 
     "An implementation to take user time input. Coming up next"
     def time_parser(self):
