@@ -94,30 +94,30 @@ class analyzer(object):
         #print(self.results_container)
 
     def top_five_errors(self):
-        errors_deft_dict=defaultdict(list) #using defaultdict as it is easy to append if exists, and add if not
-        log_path=self.unziped_file_location()
+        errors_deft_dict = defaultdict(list)  # using defaultdict as it is easy to append if exists, and add if not
+        log_path = self.unziped_file_location()
         os.chdir(log_path)
-        all_files=os.listdir(log_path)
-        error_pattern=["Error", "error", "ERROR"]
+        all_files = os.listdir(log_path)
+        error_pattern = ["Error", "error", "ERROR"]
         for item in all_files:
             with open(item) as file:
                 for line in file.readlines():
                     for phrase in error_pattern:
                         if phrase in line:
                             errors_deft_dict[item].append(line)
-        filename_list=list(errors_deft_dict)
-        with open('datafile.csv', 'w', newline='') as file:
-            writer=csv.writer(file)
+        filename_list = list(errors_deft_dict)
+        with open('datafile.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
             for items in filename_list:
-                error_values_list=errors_deft_dict[items]
-                writer.writerow(items)
+                error_values_list = errors_deft_dict[items]
+                writer.writerow([items])
                 if (len(error_values_list) < 1):
-                    writer.writerow('No errors here')
+                    writer.writerow(['No errors here'])
                     continue
-                writting_count=0
+                writting_count = 0
                 try:
                     while (writting_count < 5):
-                        writer.writerow(error_values_list[writting_count])
+                        writer.writerow([error_values_list[writting_count]])
                         writting_count += 1
                 except IndexError:
                     continue
